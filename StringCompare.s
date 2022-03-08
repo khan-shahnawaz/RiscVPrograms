@@ -1,6 +1,8 @@
 # Shahnawaz Khan
 # 2020CSB1123
 
+# RiscV program to calculate the number of positions where two string differ
+
 #Note:
 #       *. Give two string as an input in .data section
 #       *. It is assumed that the input contains character a-z and A-Z only.

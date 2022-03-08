@@ -1,6 +1,8 @@
 # Shahnawaz Khan
 # 2020CSB1123
 
+# RiscV program to extract rs1, rs2, rd and opcode given a RiscV machine instruction in hex format
+
 # Note:
 #        *. Write the instruction in hex or decimal format in the InstructionCode label
 #        *. It stores the information in this way -> rs1, rs2, rd, immediate and opcode in the memory. In some instruction type, rd or rs2 or immediate may not exist. In this case the next memory location contains the next available element keeping the sequence of rs1, rs2, rd, immediate and opcode same.(More details at corresponding labels)

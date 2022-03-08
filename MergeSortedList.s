@@ -1,6 +1,8 @@
 # Shahnawaz Khan
 # 2020CSB1123
 
+# Merging two lists in RiscV
+
 # Note:
 #
 #    * Edit the contents in the .data to provide input

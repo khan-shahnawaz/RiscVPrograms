@@ -1,6 +1,8 @@
 # Shahnawaz Khan
 # 2020CSB1123
 
+# Implementation of Queue Data structure in RiscV
+
 # Note:
 #       * The input is case sensitive.
 #       * Enter E <space> <num> to enque a number
