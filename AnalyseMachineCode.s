@@ -1,14 +1,13 @@
 # Shahnawaz Khan
 # 2020CSB1123
 
-# RiscV program to extract rs1, rs2, rd and opcode given a RiscV machine instruction in hex format
+# RiscV program to extract rs1, rs2, rd, fun3, fun7 and opcode given a RiscV machine instruction in hex format
 
 # Note:
 #        *. Write the instruction in hex or decimal format in the InstructionCode label
-#        *. It stores the information in this way -> rs1, rs2, rd, immediate and opcode in the memory. In some instruction type, rd or rs2 or immediate may not exist. In this case the next memory location contains the next available element keeping the sequence of rs1, rs2, rd, immediate and opcode same.(More details at corresponding labels)
+#        *. It stores the information in this way -> rs1, rs2, rd, immediate, opcode, fun3, fun7 in the memory. In some instruction type, rd or rs2 or immediate may not exist. In this case the next memory location contains the next available element keeping the sequence of rs1, rs2, rd, immediate and opcode same.(More details at corresponding labels)
 #        *. The absolute value of the immediate is stored which is extracted from the machine instruction. The sign of the immediate is ignored.
 #        *. In Sb type instruction, the stored value doesn't append 0 at the end to make complete value. the stored value is directly taken from the instruction and stored.
-#        *. As per the instruction in the assignment, only 7 digit op code is stored
 
 .data
 InstructionCode: .word	0x80C28063      #Edit the number present here to make an input
@@ -32,7 +31,7 @@ beq x6 x7 CaseSbtype	#If opcode matches, then jump to the CaseSbtype label
 
 CaseRtype:
 
-#Storage Format -> rs1 rs2 rd opcode [All the values are stored as a 32 bit integer starting from 0x10001000]
+#Storage Format -> rs1 rs2 rd opcode fun3 fun7 [All the values are stored as a 32 bit integer starting from 0x10001000]
 
     srli x28 x5 15          #Right shift to extract rs1
     andi x28 x28 0x1F       #And with 0b11111 to get value of rs1
@@ -43,12 +42,14 @@ CaseRtype:
     srli x28 x5 7           #Right shift to extract rd
     andi x28 x28 0x1F       #And with 0b11111 to get the value of rd
     sw x28 8(x9)            #Store the value of rd in memory
+    srli x28 x5 25          #Right shift by 12 to extract fun7
+    sw x28 20(x9)           #Store in memory
     beq x0 x0 Exit          #Go to exit
 
 
 CaseItype:
 
-#Storage Format -> rs1 rd immediate opcode [All the values are stored as a 32 bit integer starting from 0x10001000 and the sign of immediate is ignored]
+#Storage Format -> rs1 rd immediate opcode fun3 [All the values are stored as a 32 bit integer starting from 0x10001000 and the sign of immediate is ignored]
 
     srli x28 x5 15          #Right shift to extract rs1
     andi x28 x28 0x1F       #And with 0b11111 to get value of rs1
@@ -62,7 +63,7 @@ CaseItype:
 
 CaseStype:
 
-#Storage Format -> rs1 r2 immediate opcode [All the values are stored as a 32 bit integer starting from 0x10001000 and the sign of immediate is ignored]
+#Storage Format -> rs1 r2 immediate opcode fun3 [All the values are stored as a 32 bit integer starting from 0x10001000 and the sign of immediate is ignored]
 
     srli x28 x5 15          #Right shift to extract rs1
     andi x28 x28 0x1F       #And with 0b11111 to get value of rs1
@@ -80,7 +81,7 @@ CaseStype:
 
 CaseSbtype:
 
-#Storage Format -> rs1 r2 immediate opcode [All the values are stored as a 32 bit integer starting from 0x10001000 and the sign of immediate is ignored. Only imm[12:1] is stored as an integer]
+#Storage Format -> rs1 r2 immediate opcode fun3 [All the values are stored as a 32 bit integer starting from 0x10001000 and the sign of immediate is ignored. Only imm[12:1] is stored as an integer]
 
     srli x28 x5 15          #Right shift to extract rs1
     andi x28 x28 0x1F       #And with 0b11111 to get value of rs1
@@ -108,3 +109,6 @@ CaseSbtype:
 Exit:
 
     sw x6 12(x9)            #Store the opcode at the end
+    srli x28 x5 12          #Right shift by 12 to extract fun3
+    andi x28 x28 7          #And with 0b111 to get all values other than fun3 as 0
+    sw x28 16(x9)           #Store in memory

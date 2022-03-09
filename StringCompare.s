@@ -5,14 +5,14 @@
 
 #Note:
 #       *. Give two string as an input in .data section
-#       *. It is assumed that the input contains character a-z and A-Z only.
+#       *. It is assumed that the input contains ASCII symbols only.
 #       *. The length of the string is not used in the program since the end of the string can be detected by Null character only.
 #       *. The length of both the strings should be same
 
 .data
-string1: .string "fdnsadknnf"       #Input First string
-string2: .string "aslgdkfnln"       #Input Second String
-size: .word 10                      #Input size of the string [Optional]
+string1: .string "Hello world"       #Input First string
+string2: .string "HEllO-WorlD"       #Input Second String
+size: .word 10                       #Input size of the string [Optional]
 
 .text
 
@@ -42,6 +42,7 @@ ExitStoring:                #A subroutine which initialises the registers to sta
     lui x11 0x10001         #Load the start address of the string 1
     lui x12 0x10002         #Load the start address of the string 2
     addi x28 x0 96          #Load 96(Small letters starts at 97 in ASCII)
+    addi x29 x0 122         #Load 123(Small letters end at 122)
 
 FunctionCount:
 
@@ -49,9 +50,11 @@ FunctionCount:
     lb x6 0(x12)                    #Load character of second string
     beq x5 x0 Exit                  #If its a null character, then exit the program
     ble x5 x28 DontCapitalise1      #If the character is less than 96, then its small letter.(No need to make it capital for comparison )
+    bgt x5 x29 DontCapitalise1      #If the character is not lowercase letter, then also don't capitalise
     addi x5 x5 -32                  #If its a small letter, then add 32 to make it capital temporarly
     DontCapitalise1:                
     ble x6 x28 DontCapitalise2      #If the character of the second string is capital then don't capitalise
+    bgt x6 x29 DontCapitalise2      #If the character is not lowercase is more than lowercase letters, then also don't capitaise 
     addi x6 x6 -32                  #Making the character of the second string captital temporarly
     DontCapitalise2:
     beq x5 x6 DontAdd               #If both characters are equal, then no need to increment x7
