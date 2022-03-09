@@ -38,7 +38,7 @@ StoreString:            #A function used to store string in the desired memory l
 ExitStoring:                #A subroutine which initialises the registers to start function count
 
     sb x0 0(x28)            #Store Null character at the end of the first string
-    sb x0 0(x28)            #Store Null character at the end of the second string
+    sb x0 0(x29)            #Store Null character at the end of the second string
     lui x11 0x10001         #Load the start address of the string 1
     lui x12 0x10002         #Load the start address of the string 2
     addi x28 x0 96          #Load 96(Small letters starts at 97 in ASCII)

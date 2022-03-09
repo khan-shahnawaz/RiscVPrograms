@@ -10,7 +10,7 @@
 #        *. In Sb type instruction, the stored value doesn't append 0 at the end to make complete value. the stored value is directly taken from the instruction and stored.
 
 .data
-InstructionCode: .word	0x80C28063      #Edit the number present here to make an input
+InstructionCode: .word	0xFE0000E3      #Edit the number present here to make an input
 
 .text
 
